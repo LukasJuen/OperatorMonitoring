@@ -16,15 +16,35 @@ haar_cascade = cv.CascadeClassifier('haar_face.xml')
 #Laden des Kamerastreams an Stelle 0, in unserem Fall Kamera ueber Breitbandkabel, Legacy Modus erforderlich!
 capture = cv.VideoCapture(0)
 
+#Definierung von Zeitvariablen
+previous_time = time.time()
+warning_gap = 20
+emergency_gap = 60
+
 
 
 #Schleife die permanent ausgeführt wird, evtl auslagerbar in Funktion?
 while True:
-
+    # Gesicht erkennen
     face_flag = functions.getface(capture, haar_cascade)
-    functions.setoutput(face_flag, buzzer)
 
-    #Abbruchbedingung um aus While auszubrechen
+    #Zeitvariablen befüllen
+    if face_flag:
+        previous_time = time.time() #Zeit, seit dem letzten Erkennen eines Gesichtes
+    else:
+        elapsed_time = time.time()-previous_time
+
+    #Buzzer einschalten, falls erforderlich
+    if elapsed_time > emergency_gap:
+        break
+
+    # Buzzer 
+    if elapsed_time > warning_gap:
+        functions.setoutput(True, buzzer)
+    else:
+        functions.setoutput(False, buzzer)
+
+    #Abbruchbedingung um aus While auszubrechen, für Testzwecke
     if cv.waitKey(20) & 0xFF==ord('d'):
         break
 

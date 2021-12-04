@@ -30,9 +30,9 @@ def getface(capture, haar_cascade) :
     return face_flag
 
 
-def setoutput(face_flag, buzzer):
+def setoutput(outputflag, buzzer):
         #Falls Gesicht, etwas tun
-    #if face_flag:
+    #if outputflag:
         #GPIO.output(buzzer,GPIO.LOW)
     #else:
         #GPIO.output(buzzer,GPIO.HIGH)
