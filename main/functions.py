@@ -1,5 +1,6 @@
 import cv2 as cv
-#import RPi.GPIO as GPIO
+import time
+import RPi.GPIO as GPIO
 
 def getface(capture, haar_cascade) :
      #Ein Bild aus dem Stream laden
@@ -16,12 +17,6 @@ def getface(capture, haar_cascade) :
     for (x,y,w,h) in faces_rect:
         cv.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), thickness=2)
         face_flag = True
-    
-    #Falls Gesicht, etwas tun
-    if face_flag:
-        print('face found')
-    else:
-        print('no face')
 
     #Zeige das Bild
     cv.imshow('Detected Faces', frame)
@@ -29,11 +24,17 @@ def getface(capture, haar_cascade) :
     #face-flag ausgeben
     return face_flag
 
+def set_timers(flag, prev, elapsed):
+    if flag:
+        prev = time.time() #Zeit, seit dem letzten Erkennen eines Gesichtes       
+    else:
+        elapsed = time.time()-prev #Verstrichene Zeit, seit dem letzen Gesichtserkennen
+        
+    return prev, elapsed
 
-def setoutput(outputflag, buzzer):
-        #Falls Gesicht, etwas tun
-    #if outputflag:
-        #GPIO.output(buzzer,GPIO.LOW)
-    #else:
-        #GPIO.output(buzzer,GPIO.HIGH)
+def set_buzzer(status, buzzer):
+    if status == 2:
+        GPIO.output(buzzer,GPIO.LOW)
+    else:
+        GPIO.output(buzzer,GPIO.HIGH)
     return 0
