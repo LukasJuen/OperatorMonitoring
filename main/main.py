@@ -4,7 +4,6 @@ import cv2 as cv
 import time
 import functions
 import RPi.GPIO as GPIO
-from main.functions import set_timers
 
 # Definierungen fuer GPIO (Buzzer)
 GPIO.setwarnings(False)
@@ -43,7 +42,7 @@ while True:
         # Gesicht erkennen
         face_flag = functions.getface(capture, haar_cascade)
         #Zeitvariablen befüllen
-        previous_time, elapsed_time = set_timers(face_flag, previous_time, elapsed_time)
+        previous_time, elapsed_time = functions.set_timers(face_flag, previous_time, elapsed_time)
 
         if elapsed_time > warning_gap: #Falls zu lange Zeit verstrichen, Status ändern
             danger_status = 2
@@ -53,7 +52,7 @@ while True:
         # Gesicht erkennenung trotzdem fortsetzen
         face_flag = functions.getface(capture, haar_cascade)
         #Zeitvariablen befüllen
-        previous_time, elapsed_time = set_timers(face_flag, previous_time, elapsed_time)
+        previous_time, elapsed_time = functions.set_timers(face_flag, previous_time, elapsed_time)
 
         #Status wechseln gegebenenfalls
         if elapsed_time > emergency_gap:
