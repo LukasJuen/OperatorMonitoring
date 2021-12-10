@@ -18,8 +18,8 @@ capture = cv.VideoCapture(0)
 
 #Definierung von Zeitvariablen
 previous_time = time.time()
-warning_gap = 20
-emergency_gap = 60
+warning_gap = 10
+emergency_gap = 15
 
 
 
