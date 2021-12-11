@@ -4,12 +4,27 @@ import cv2 as cv
 import time
 import functions
 import RPi.GPIO as GPIO
+from main.functions import set_buzzer, set_led
 
-# Definierungen fuer GPIO (Buzzer)
+# Definierungen fuer GPIO ##################################################################
+# (Buzzer)
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 buzzer=4
 GPIO.setup(buzzer,GPIO.OUT)
+
+# GPIO LED
+led_rot = 17
+GPIO.setup(led_rot,GPIO.OUT)
+led_gelb = 27
+GPIO.setup(led_gelb,GPIO.OUT)
+led_grün = 22
+GPIO.setup(led_grün,GPIO.OUT)
+
+#GPIO danger
+danger_gpio = True #hier noch input definieren für arduino oder sensoren
+hauptschalter_gpio = True #gpio des Hauptschalters lesen
+###########################################################################################
 
 #Definieren der haar-cascade zur Gesichtserkennung
 haar_cascade = cv.CascadeClassifier('haar_face.xml')
@@ -28,14 +43,13 @@ danger_status = 0
 
 #Schleife die permanent ausgeführt wird, evtl auslagerbar in Funktion?
 while True:
-    #HIER CODE EINSETZEN FÜR GPIO UND STATUS von 0 auf 1
-    #
-    #if gefahrengpio == False and danger_status!=3:
-        #danger_status = 0
+    
+    if danger_gpio == False and danger_status!=3:
+        danger_status = 0
 
-    #if gefahrengpio == True and danger_status = 0:
-        #danger_status = 1
-    ##
+    if danger_gpio == True and danger_status == 0:
+        danger_status = 1
+    
 
 
     if danger_status == 1:
@@ -65,7 +79,8 @@ while True:
         #HIER ALLE LED BLINKEN LASSEN 
         print('gagge')
 
-    print(danger_status)
+    set_buzzer(danger_status, buzzer)
+    set_led(danger_status, led_rot, led_gelb, led_grün)
 
     #Abbruchbedingung um aus While auszubrechen, für Testzwecke
     if cv.waitKey(20) & 0xFF==ord('d'):

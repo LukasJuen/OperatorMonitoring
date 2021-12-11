@@ -38,3 +38,18 @@ def set_buzzer(status, buzzer):
     else:
         GPIO.output(buzzer,GPIO.HIGH)
     return 0
+
+def set_led(status, red, yellow, green):
+    if status == 1:
+        GPIO.output(green, GPIO.HIGH)
+        GPIO.output(yellow, GPIO.LOW)
+        GPIO.output(red, GPIO.LOW)
+    elif status == 2:
+        GPIO.output(yellow, GPIO.HIGH)
+        GPIO.output(green, GPIO.LOW)
+        GPIO.output(red, GPIO.LOW)
+    elif status == 3:
+        GPIO.output(red, GPIO.HIGH)
+        GPIO.output(green, GPIO.LOW)
+        GPIO.output(yellow, GPIO.LOW)
+    return 0
