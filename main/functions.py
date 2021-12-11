@@ -72,7 +72,7 @@ def set_led(status, red, yellow, green):
 
 def get_danger(pin): #input als Liste, überprüfen, falls einer error anzeigt, ausgabe als error
     j = 0
-    for i in range (pin):
+    for i in pin:
         if GPIO.input(i) == 1:
             j += 1
     if j > 0:
