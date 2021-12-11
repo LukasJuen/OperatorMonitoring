@@ -27,10 +27,12 @@ GPIO.setup(23,GPIO.IN)
 GPIO.setup(24,GPIO.IN)
 hauptschalter_pin = 18 #gpio des Hauptschalters lesen
 GPIO.setup(hauptschalter_pin,GPIO.IN)
-###########################################################################################
+
 #GPIO RELAIS
 relaispin = 26
 GPIO.setup(relaispin,GPIO.OUT)
+###########################################################################################
+
 
 
 #Definieren der haar-cascade zur Gesichtserkennung
@@ -44,7 +46,7 @@ elapsed_time = 0
 warning_gap = 10
 emergency_gap = 15
 
-#blinken für buzzer
+#blinken variablen für buzzer
 buzz_timer = 0
 buzzgap = 0.25
 buzzflag = False
@@ -59,6 +61,9 @@ while True:
         danger_gpio = functions.get_danger(external_pins) #externe Gefahrenquelle finden
         if danger_gpio == False and danger_status!=3:
             danger_status = 0
+            previous_time = time.time()
+            elapsed_time = 0
+
 
         if danger_gpio == True and danger_status == 0:
             danger_status = 1
@@ -74,7 +79,6 @@ while True:
                 danger_status = 2
 
         if danger_status == 2:
-            # Buzzer hier evtl?
             # Gesicht erkennenung trotzdem fortsetzen
             face_flag = functions.getface(capture, haar_cascade)
             #Zeitvariablen befüllen
