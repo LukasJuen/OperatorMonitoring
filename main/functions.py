@@ -37,13 +37,12 @@ def set_buzzer(status, pin, last_timer, gap, flag):
         GPIO.output(pin,GPIO.HIGH)
     elif status == 2:
         if flag == True:
-            if last_timer + time.time() > gap:
+            if  time.time()  > gap + last_timer:
                 GPIO.output(pin,GPIO.LOW)
                 flag = False
                 last_timer = time.time()
-                
         else:
-            if last_timer + time.time() > gap:
+            if time.time() > gap + last_timer:
                 GPIO.output(pin,GPIO.HIGH)
                 flag = True
                 last_timer = time.time()

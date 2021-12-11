@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 buzzerpin=4
-GPIO.setup(buzzer,GPIO.OUT)
+GPIO.setup(buzzerpin,GPIO.OUT)
 
 # GPIO LED
 led_rot = 17
@@ -89,7 +89,7 @@ while True:
         elapsed_time = 0
 
     #Set GPIOs
-    buzzflag, buzz_timer = functions.set_buzzer(danger_status, buzzerpin, buzz_timer, buzzflag, buzzgap)
+    buzzflag, buzz_timer = functions.set_buzzer(danger_status, buzzerpin, buzz_timer, buzzgap, buzzflag)
     functions.set_led(danger_status, led_rot, led_gelb, led_grün)
 
     #Abbruchbedingung um aus While auszubrechen, für Testzwecke
