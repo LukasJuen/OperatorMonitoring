@@ -28,7 +28,9 @@ GPIO.setup(24,GPIO.IN)
 hauptschalter_pin = 18 #gpio des Hauptschalters lesen
 GPIO.setup(hauptschalter_pin,GPIO.IN)
 ###########################################################################################
-
+#GPIO RELAIS
+relaispin = 26
+GPIO.setup(relaispin,GPIO.OUT)
 
 
 #Definieren der haar-cascade zur Gesichtserkennung
@@ -85,14 +87,13 @@ while True:
                 danger_status = 1
 
         if danger_status == 3:
-            #HIER IRGENDWAS AUSSCHALTEN
-            #HIER ALLE LED BLINKEN LASSEN 
-            print('gagge')
+            GPIO.output(relaispin, GPIO.HIGH) #relais zum Trennen
     else:
         danger_status = 0
         #Zeiten zurücksetzen, damit der Hauptschalter als reste verwendet werden kann
         previous_time = time.time()
         elapsed_time = 0
+        GPIO.output(relaispin, GPIO.LOW) #Relais Kreis geschlossen
 
     #Set GPIOs
     buzzflag, buzz_timer = functions.set_buzzer(danger_status, buzzerpin, buzz_timer, buzzgap, buzzflag)
