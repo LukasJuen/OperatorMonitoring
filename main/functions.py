@@ -34,9 +34,9 @@ def set_timers(flag, prev, elapsed):
 
 def set_buzzer(status, buzzer):
     if status == 2:
-        GPIO.output(buzzer,GPIO.LOW)
-    else:
         GPIO.output(buzzer,GPIO.HIGH)
+    else:
+        GPIO.output(buzzer,GPIO.LOW)
     return 0
 
 def set_led(status, red, yellow, green):

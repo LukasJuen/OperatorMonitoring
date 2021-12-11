@@ -22,8 +22,8 @@ GPIO.setup(led_grün,GPIO.OUT)
 
 #GPIO danger
 danger_gpio = True #hier noch input definieren für arduino oder sensoren
-hauptschalter_pin = 5 #gpio des Hauptschalters lesen
-GPIO.setup(hauptschalter_pin,GPIO.IN)
+#hauptschalter_pin = 5 #gpio des Hauptschalters lesen
+#GPIO.setup(hauptschalter_pin,GPIO.IN)
 ###########################################################################################
 
 #Definieren der haar-cascade zur Gesichtserkennung
