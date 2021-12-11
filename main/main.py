@@ -22,9 +22,14 @@ GPIO.setup(led_grün,GPIO.OUT)
 
 #GPIO danger
 danger_gpio = True #hier noch input definieren für arduino oder sensoren
+external_pins = (23, 24)
+GPIO.setup(23,GPIO.IN)
+GPIO.setup(24,GPIO.IN)
 hauptschalter_pin = 18 #gpio des Hauptschalters lesen
 GPIO.setup(hauptschalter_pin,GPIO.IN)
 ###########################################################################################
+
+
 
 #Definieren der haar-cascade zur Gesichtserkennung
 haar_cascade = cv.CascadeClassifier('haar_face.xml')
@@ -39,8 +44,8 @@ emergency_gap = 15
 
 #blinken für buzzer
 buzz_timer = 0
-buzzgap = 1
-buzzflag = True
+buzzgap = 0.25
+buzzflag = False
 
 #statusflags definieren, 0=keine Überprüfung, 1= Gefahrenquelle erkannt, Gesicht checken, 2= Gesicht zu lange nicht da, Warnung, 3=Ausschalten
 danger_status = 0
@@ -49,6 +54,7 @@ danger_status = 0
 #Schleife die permanent ausgeführt wird, evtl auslagerbar in Funktion?
 while True:
     if GPIO.input(hauptschalter_pin) == 1:
+        danger_gpio = functions.get_danger(external_pins) #externe Gefahrenquelle finden
         if danger_gpio == False and danger_status!=3:
             danger_status = 0
 
