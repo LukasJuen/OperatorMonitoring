@@ -9,7 +9,7 @@ import RPi.GPIO as GPIO
 # (Buzzer)
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-buzzer=4
+buzzerpin=4
 GPIO.setup(buzzer,GPIO.OUT)
 
 # GPIO LED
@@ -36,6 +36,11 @@ previous_time = time.time()
 elapsed_time = 0
 warning_gap = 10
 emergency_gap = 15
+
+#blinken für buzzer
+buzz_timer = 0
+buzzgap = 1
+buzzflag = True
 
 #statusflags definieren, 0=keine Überprüfung, 1= Gefahrenquelle erkannt, Gesicht checken, 2= Gesicht zu lange nicht da, Warnung, 3=Ausschalten
 danger_status = 0
@@ -79,11 +84,12 @@ while True:
             print('gagge')
     else:
         danger_status = 0
+        #Zeiten zurücksetzen, damit der Hauptschalter als reste verwendet werden kann
         previous_time = time.time()
         elapsed_time = 0
 
     #Set GPIOs
-    functions.set_buzzer(danger_status, buzzer)
+    buzzflag, buzz_timer = functions.set_buzzer(danger_status, buzzerpin, buzz_timer, buzzflag, buzzgap)
     functions.set_led(danger_status, led_rot, led_gelb, led_grün)
 
     #Abbruchbedingung um aus While auszubrechen, für Testzwecke

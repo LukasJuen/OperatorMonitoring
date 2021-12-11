@@ -32,12 +32,24 @@ def set_timers(flag, prev, elapsed):
         
     return prev, elapsed
 
-def set_buzzer(status, buzzer):
-    if status == 2:
-        GPIO.output(buzzer,GPIO.HIGH)
+def set_buzzer(status, pin, last_timer, gap, flag):
+    if status == 3:
+        GPIO.output(pin,GPIO.HIGH)
+    elif status == 2:
+        if flag == True:
+            if last_timer + time.time() > gap:
+                GPIO.output(pin,GPIO.LOW)
+                flag = False
+                last_timer = time.time()
+                
+        else:
+            if last_timer + time.time() > gap:
+                GPIO.output(pin,GPIO.HIGH)
+                flag = True
+                last_timer = time.time()
     else:
-        GPIO.output(buzzer,GPIO.LOW)
-    return 0
+        GPIO.output(pin, GPIO.LOW)
+    return flag, last_timer
 
 def set_led(status, red, yellow, green):
     if status == 1:
@@ -58,3 +70,4 @@ def set_led(status, red, yellow, green):
         GPIO.output(red, GPIO.LOW)
 
     return 0
+
