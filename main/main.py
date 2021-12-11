@@ -22,8 +22,8 @@ GPIO.setup(led_grün,GPIO.OUT)
 
 #GPIO danger
 danger_gpio = True #hier noch input definieren für arduino oder sensoren
-#hauptschalter_pin = 5 #gpio des Hauptschalters lesen
-#GPIO.setup(hauptschalter_pin,GPIO.IN)
+hauptschalter_pin = 18 #gpio des Hauptschalters lesen
+GPIO.setup(hauptschalter_pin,GPIO.IN)
 ###########################################################################################
 
 #Definieren der haar-cascade zur Gesichtserkennung
@@ -43,41 +43,44 @@ danger_status = 0
 
 #Schleife die permanent ausgeführt wird, evtl auslagerbar in Funktion?
 while True:
-    
-    if danger_gpio == False and danger_status!=3:
-        danger_status = 0
+    if GPIO.input(hauptschalter_pin) == 1:
+        if danger_gpio == False and danger_status!=3:
+            danger_status = 0
 
-    if danger_gpio == True and danger_status == 0:
-        danger_status = 1
-
-
-    if danger_status == 1:
-        # Gesicht erkennen
-        face_flag = functions.getface(capture, haar_cascade)
-        #Zeitvariablen befüllen
-        previous_time, elapsed_time = functions.set_timers(face_flag, previous_time, elapsed_time)
-
-        if elapsed_time > warning_gap: #Falls zu lange Zeit verstrichen, Status ändern
-            danger_status = 2
-
-    if danger_status == 2:
-        # Buzzer hier evtl?
-        # Gesicht erkennenung trotzdem fortsetzen
-        face_flag = functions.getface(capture, haar_cascade)
-        #Zeitvariablen befüllen
-        previous_time, elapsed_time = functions.set_timers(face_flag, previous_time, elapsed_time)
-
-        #Status wechseln gegebenenfalls
-        if elapsed_time > emergency_gap:
-            danger_status = 3 #Abschaltung, falls zu lange gedauert
-        elif elapsed_time < warning_gap: #Falls gesicht erkannt, wieder zurück auf status 1
+        if danger_gpio == True and danger_status == 0:
             danger_status = 1
 
-    if danger_status == 3:
-        #HIER IRGENDWAS AUSSCHALTEN
-        #HIER ALLE LED BLINKEN LASSEN 
-        print('gagge')
 
+        if danger_status == 1:
+            # Gesicht erkennen
+            face_flag = functions.getface(capture, haar_cascade)
+            #Zeitvariablen befüllen
+            previous_time, elapsed_time = functions.set_timers(face_flag, previous_time, elapsed_time)
+
+            if elapsed_time > warning_gap: #Falls zu lange Zeit verstrichen, Status ändern
+                danger_status = 2
+
+        if danger_status == 2:
+            # Buzzer hier evtl?
+            # Gesicht erkennenung trotzdem fortsetzen
+            face_flag = functions.getface(capture, haar_cascade)
+            #Zeitvariablen befüllen
+            previous_time, elapsed_time = functions.set_timers(face_flag, previous_time, elapsed_time)
+
+            #Status wechseln gegebenenfalls
+            if elapsed_time > emergency_gap:
+                danger_status = 3 #Abschaltung, falls zu lange gedauert
+            elif elapsed_time < warning_gap: #Falls gesicht erkannt, wieder zurück auf status 1
+                danger_status = 1
+
+        if danger_status == 3:
+            #HIER IRGENDWAS AUSSCHALTEN
+            #HIER ALLE LED BLINKEN LASSEN 
+            print('gagge')
+    else:
+        danger_status = 0
+
+    #Set GPIOs
     functions.set_buzzer(danger_status, buzzer)
     functions.set_led(danger_status, led_rot, led_gelb, led_grün)
 

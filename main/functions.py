@@ -52,4 +52,9 @@ def set_led(status, red, yellow, green):
         GPIO.output(red, GPIO.HIGH)
         GPIO.output(green, GPIO.LOW)
         GPIO.output(yellow, GPIO.LOW)
+    elif status == 0:
+        GPIO.output(green, GPIO.LOW)
+        GPIO.output(yellow, GPIO.LOW)
+        GPIO.output(red, GPIO.LOW)
+
     return 0
