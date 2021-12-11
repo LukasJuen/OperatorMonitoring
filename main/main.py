@@ -79,6 +79,8 @@ while True:
             print('gagge')
     else:
         danger_status = 0
+        previous_time = time.time()
+        elapsed_time = 0
 
     #Set GPIOs
     functions.set_buzzer(danger_status, buzzer)
