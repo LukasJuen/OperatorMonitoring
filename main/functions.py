@@ -26,7 +26,8 @@ def getface(capture, haar_cascade) :
 
 def set_timers(flag, prev, elapsed):
     if flag:
-        prev = time.time() #Zeit, seit dem letzten Erkennen eines Gesichtes       
+        prev = time.time() #Zeit, seit dem letzten Erkennen eines Gesichtes
+        elapsed = time.time()-prev #Verstrichene Zeit, seit dem letzen Gesichtserkennen       
     else:
         elapsed = time.time()-prev #Verstrichene Zeit, seit dem letzen Gesichtserkennen
         
