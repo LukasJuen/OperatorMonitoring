@@ -8,7 +8,7 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 import RPi.GPIO as GPIO
 
-#Definitions for GPIO
+# Definitions for GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
@@ -26,6 +26,7 @@ chan3 = AnalogIn(ads, ADS.P3)
 
 delayTime = 1
 Digital_PIN = 24 # Pin 24
+threshold = 0.20 # Depending on the environmental conditions 
 
 # Read input -> continuous loop with query 
 GPIO.setup(Digital_PIN, GPIO.IN, pull_up_down = GPIO.PUD_OFF) 
@@ -36,7 +37,7 @@ while True:
     float_analog = float(analog)
  
     # Output to console
-    if float_analog < 0.20:
+    if float_analog < threshold:
         print ("Analog voltage value:", analog, "V unter 0.20, ", "Attention, fire detected!")
     else:
         print ("Analog voltage value:", analog, "V über 0,20 V, ", "Everything is fine :-)")
